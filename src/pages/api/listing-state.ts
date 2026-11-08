@@ -6,13 +6,7 @@ import { parseListingStateForm } from '../../lib/listing-state-form';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, locals }) => {
-  if (!locals.user) {
-    return new Response(JSON.stringify({ error: 'unauthorized' }), {
-      status: 401,
-      headers: { 'content-type': 'application/json' },
-    });
-  }
+export const POST: APIRoute = async ({ request }) => {
   const p = parseListingStateForm(await request.formData());
   if (!p.ok) return new Response('Bad request', { status: 400 });
 

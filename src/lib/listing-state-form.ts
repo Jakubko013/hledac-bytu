@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { sanitizeNext } from './auth';
+import { sanitizeNext } from './safe-redirect';
 
 export const MAX_NOTE_LENGTH = 2000;
 

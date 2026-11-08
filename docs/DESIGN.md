@@ -25,7 +25,7 @@ Contract: `interface PortalAdapter { id: Portal; fetch(q: CrawlQuery, ctx: Crawl
 - `match`: criteria_id, listing_id, score, breakdown jsonb, computed_at.
 - `listing_state` (shared): listing_id PK, status (new|seen|favorite|hidden), note, updated_at.
 - `crawl_run`: id, portal, runner (netlify|github|manual), started_at, finished_at, status (running|ok|partial|failed), pages, fetched, new_count, updated_count, error.
-- `login_attempt` for rate limiting.
+- `login_attempt`: unused (left from the removed login rate limiter; no destructive migration).
 - Dedup: `fingerprint = hash(offer_type, layout, round(area), round(lat,3), round(lng,3))`; dashboard groups by fingerprint, shows the best-scored copy (ties → cheapest), "také na: …".
 
 ## Scoring (`src/scoring/`, pure functions)
@@ -40,10 +40,10 @@ Defaults: price_per_m2 3, distance 3, condition 3, area 3, freshness 1, extras 0
 Condition extraction: from portal fields (Sreality "Stav objektu"/building condition, Bezrealitky condition/"novostavba", iDNES params) + keyword fallback on title/description ("novostavba", "po rekonstrukci", "k rekonstrukci").
 
 ## Auth
-Netlify Identity deprecated → env `APP_USERS` (`user:scryptHash,user2:scryptHash`), `SESSION_SECRET` HMAC-signed cookie (HttpOnly, Secure, SameSite=Lax, 30 d). `src/middleware.ts` guards everything except `/login` and crawl endpoints (those require `CRAWL_SECRET`). Login rate-limited via DB.
+No login: the dashboard is public by explicit user decision (risks accepted). `src/middleware.ts` only adds security headers (incl. `X-Robots-Tag: noindex`); Astro's default `security.checkOrigin` protects form POSTs (CSRF). Crawl endpoints require `x-crawl-secret` = `getCrawlSecret()` (`src/lib/crawl-auth.ts`): `HMAC-SHA256(key = NETLIFY_DB_URL ?? DATABASE_URL, msg = "hledac-bytu:crawl")` hex, derived server-side, no env var. Abuse limit: `/api/run-now` refuses (→ `/health?busy=1`) if any crawl_run started < 60 min ago (`src/lib/run-cooldown.ts`); the background function additionally skips a portal with a `running` run < 15 min old.
 
 ## Env
-`APP_USERS`, `SESSION_SECRET`, `CRAWL_SECRET`, `NETLIFY_DB_URL` (injected) / `DATABASE_URL` (GitHub Actions + fallback).
+`NETLIFY_DB_URL` (injected) / `DATABASE_URL` (GitHub Actions + fallback).
 
 ## Structure
 ```
@@ -51,12 +51,12 @@ astro.config.mjs netlify.toml drizzle.config.ts .env.example package.json tsconf
 db/schema.ts db/index.ts
 netlify/database/migrations/
 netlify/functions/crawl-dispatch.mts crawl-portal-background.mts
-scripts/crawl.ts  scripts/hash-password.ts
+scripts/crawl.ts
 .github/workflows/ci.yml crawl.yml
 src/crawler/types.ts http.ts upsert.ts fingerprint.ts condition.ts run.ts portals/{sreality,bezrealitky,idnes}.ts
 src/scoring/score.ts rescore.ts
-src/lib/auth.ts src/middleware.ts
-src/pages/index.astro criteria/index.astro criteria/[id].astro listing/[id].astro health.astro login.astro api/*.ts
+src/lib/crawl-auth.ts run-cooldown.ts safe-redirect.ts src/middleware.ts
+src/pages/index.astro criteria/index.astro criteria/[id].astro listing/[id].astro health.astro api/*.ts
 tests/ (vitest, fixtures in tests/fixtures/)
 ```
 

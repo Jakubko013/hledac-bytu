@@ -16,7 +16,7 @@ const busy = Astro.url.searchParams.get('busy');
     </form>
   </div>
   {msg && <div class="alert alert-ok" role="status">Crawl byl spuštěn.</div>}
-  {busy && <div class="alert alert-error" role="status">Stahování už běží, zkuste to za chvíli.</div>}
+  {busy && <div class="alert alert-error" role="status">Stahování proběhlo nedávno nebo právě běží, zkuste to později.</div>}
 
   <div class="card table-wrap">
     <table>

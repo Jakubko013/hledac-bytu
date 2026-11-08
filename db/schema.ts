@@ -157,6 +157,7 @@ export const crawlRun = pgTable(
   (t) => [index('crawl_run_portal_started_idx').on(t.portal, t.startedAt.desc())],
 );
 
+/** UNUSED: left over from the removed login rate limiter; kept to avoid a destructive migration. */
 export const loginAttempt = pgTable(
   'login_attempt',
   {

@@ -4,7 +4,7 @@ import { createDb } from '../../db/index';
 import { PORTALS, RUNNERS } from '../../db/schema';
 import { adapters } from '../../src/crawler/portals/index';
 import { hasActiveRun, runPortal } from '../../src/crawler/run';
-import { secretsMatch } from '../../src/lib/crawl-auth';
+import { getCrawlSecret, secretsMatch } from '../../src/lib/crawl-auth';
 
 const Body = z.object({
   portal: z.enum(PORTALS),
@@ -16,7 +16,7 @@ const MAX_PAGES = 30;
 const RUN_TIMEOUT_MS = 14 * 60_000;
 
 export default async (req: Request): Promise<void> => {
-  if (!secretsMatch(req.headers.get('x-crawl-secret'), process.env.CRAWL_SECRET)) {
+  if (!secretsMatch(req.headers.get('x-crawl-secret'), getCrawlSecret())) {
     console.error('crawl-portal-background: invalid secret');
     return;
   }

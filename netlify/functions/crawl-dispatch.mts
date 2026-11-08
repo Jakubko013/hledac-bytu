@@ -1,13 +1,14 @@
 import type { Config } from '@netlify/functions';
 import { adapters } from '../../src/crawler/portals/index';
+import { getCrawlSecret } from '../../src/lib/crawl-auth';
 
 export default async (): Promise<void> => {
   const base = process.env.URL;
-  const secret = process.env.CRAWL_SECRET;
-  if (!base || !secret) {
-    console.error('crawl-dispatch: URL or CRAWL_SECRET is not set');
+  if (!base) {
+    console.error('crawl-dispatch: URL is not set');
     return;
   }
+  const secret = getCrawlSecret();
   const portals = Object.keys(adapters);
   const results = await Promise.allSettled(
     portals.map(async (portal) => {

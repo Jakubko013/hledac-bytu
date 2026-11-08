@@ -1,29 +1,24 @@
 import type { APIRoute } from 'astro';
 import { createDb } from '../../../db/index';
-import { hasActiveRun } from '../../crawler/run';
+import { desc } from 'drizzle-orm';
+import { crawlRun } from '../../../db/schema';
+import { getCrawlSecret } from '../../lib/crawl-auth';
+import { isInCooldown } from '../../lib/run-cooldown';
 import { adapters } from '../../crawler/portals/index';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ url, locals }) => {
-  if (!locals.user) {
-    return new Response(JSON.stringify({ error: 'unauthorized' }), {
-      status: 401,
-      headers: { 'content-type': 'application/json' },
-    });
-  }
-  const secret = process.env.CRAWL_SECRET;
-  if (!secret) {
-    console.error('run-now: CRAWL_SECRET is not set');
-    return new Response('Server misconfigured', { status: 500 });
-  }
+export const POST: APIRoute = async ({ url }) => {
+  const secret = getCrawlSecret();
 
   try {
-    if (await hasActiveRun(createDb())) {
+    const db = createDb();
+    const [last] = await db.select({ startedAt: crawlRun.startedAt }).from(crawlRun).orderBy(desc(crawlRun.startedAt)).limit(1);
+    if (isInCooldown(last?.startedAt)) {
       return new Response(null, { status: 303, headers: { Location: '/health?busy=1' } });
     }
   } catch (err) {
-    console.error('run-now: busy check failed', err);
+    console.error('run-now: cooldown check failed', err);
     return new Response('Service unavailable', { status: 503 });
   }
 

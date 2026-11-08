@@ -32,9 +32,9 @@ describe('withSecurityHeaders', () => {
   });
 
   it('handles immutable headers (Response.redirect)', () => {
-    const r = withSecurityHeaders(Response.redirect('http://localhost/login', 302));
+    const r = withSecurityHeaders(Response.redirect('http://localhost/health', 302));
     expect(r.status).toBe(302);
-    expect(r.headers.get('location')).toBe('http://localhost/login');
+    expect(r.headers.get('location')).toBe('http://localhost/health');
     expect(r.headers.get('X-Frame-Options')).toBe('DENY');
     expect(r.headers.get('Cache-Control')).toBe('private, no-store');
   });

@@ -3,7 +3,7 @@ import '../styles/global.css';
 
 interface Props {
   title: string;
-  /** Show header navigation (false for login). */
+  /** Show header navigation (false to hide it). */
   nav?: boolean;
 }
 const { title, nav = true } = Astro.props;
@@ -34,9 +34,6 @@ const links = [
               <a href={l.href} aria-current={l.match(path) ? 'page' : undefined}>{l.label}</a>
             ))}
           </nav>
-          <form method="post" action="/api/logout">
-            <button class="btn btn-sm" type="submit">Odhlásit</button>
-          </form>
         </div>
       </header>
     )}

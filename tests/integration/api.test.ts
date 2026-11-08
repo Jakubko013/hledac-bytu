@@ -24,7 +24,6 @@ beforeEach(async () => {
 const call = (
   handler: unknown,
   fields: Record<string, string | string[]>,
-  user: unknown = { id: 'u' },
 ) => {
   const body = new URLSearchParams();
   for (const [k, v] of Object.entries(fields)) for (const x of Array.isArray(v) ? v : [v]) body.append(k, x);
@@ -33,18 +32,12 @@ const call = (
     body,
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
   });
-  return (handler as (c: unknown) => Promise<Response>)({ request, locals: { user } });
+  return (handler as (c: unknown) => Promise<Response>)({ request });
 };
 
 const valid = { name: 'Brno 2+kk', offer_type: 'rent', city: 'Brno', active: '1', layouts: ['2+kk', '3+kk'], price_max: '30000' };
 
 describe('POST /api/criteria', () => {
-  it('401 without a user, nothing written', async () => {
-    const res = await call(criteriaPost, valid, null);
-    expect(res.status).toBe(401);
-    expect(await t.db.select().from(criteria)).toHaveLength(0);
-  });
-
   it('creates criteria (anchor from city centre, default weights), rescores, redirects to /?c=id', async () => {
     await upsertListings(t.db, [makeListing({ externalId: 'a' }), makeListing({ externalId: 'b', priceCzk: 99000 })]);
     const res = await call(criteriaPost, { ...valid, must_balcony: '1', localities: 'Žabovřesky, Líšeň, Líšeň' });
@@ -126,12 +119,6 @@ describe('POST /api/listing-state', () => {
     await upsertListings(t.db, [makeListing({ externalId: 'a' })]);
     return (await t.db.select().from(listing))[0]!.id;
   };
-
-  it('401 without user', async () => {
-    const id = await seedListing();
-    expect((await call(statePost, { listing_id: String(id), status: 'hidden' }, null)).status).toBe(401);
-    expect(await t.db.select().from(listingState)).toHaveLength(0);
-  });
 
   it('inserts state with note, then upserts (ON CONFLICT) keeping a single row', async () => {
     const id = await seedListing();

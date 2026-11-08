@@ -9,13 +9,7 @@ export const prerender = false;
 
 const redirect = (location: string) => new Response(null, { status: 303, headers: { Location: location } });
 
-export const POST: APIRoute = async ({ request, locals }) => {
-  if (!locals.user) {
-    return new Response(JSON.stringify({ error: 'unauthorized' }), {
-      status: 401,
-      headers: { 'content-type': 'application/json' },
-    });
-  }
+export const POST: APIRoute = async ({ request }) => {
   const form = await request.formData();
   const db = createDb();
 

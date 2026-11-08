@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ListingCard from '../components/ListingCard.astro';
+import Pagination from '../components/Pagination.astro';
+import { getCriteriaList, getRankedListings } from '../lib/view-data';
+import type { StatusFilter } from '../lib/view-types';
+
+const criteriaList = await getCriteriaList();
+const sp = Astro.url.searchParams;
+const requested = Number(sp.get('c'));
+const active = criteriaList.find((c) => c.id === requested) ?? criteriaList.find((c) => c.active) ?? criteriaList[0];
+
+const STATUSES: { value: StatusFilter; label: string }[] = [
+  { value: 'all', label: 'Vše' },
+  { value: 'new', label: 'Nové' },
+  { value: 'favorite', label: 'Oblíbené' },
+  { value: 'hidden', label: 'Skryté' },
+];
+const status = STATUSES.find((s) => s.value === sp.get('status'))?.value ?? 'all';
+const page = Number(sp.get('page')) || 1;
+
+const ranked = active ? await getRankedListings(active.id, { status, page }) : null;
+
+const href = (over: { status?: StatusFilter; page?: number }) => {
+  const q = new URLSearchParams();
+  if (active) q.set('c', String(active.id));
+  const s = over.status ?? status;
+  if (s !== 'all') q.set('status', s);
+  if (over.page && over.page > 1) q.set('page', String(over.page));
+  const qs = q.toString();
+  return qs ? `/?${qs}` : '/';
+};
+const here = ranked ? href({ page: ranked.page }) : '/';
+---
+<Layout title="Přehled">
+  <div class="page-head">
+    <h1>Přehled bytů</h1>
+    {ranked && <p class="muted" role="status">{ranked.total} {ranked.total === 1 ? 'nabídka' : ranked.total >= 2 && ranked.total <= 4 ? 'nabídky' : 'nabídek'}</p>}
+  </div>
+
+  {criteriaList.length === 0 ? (
+    <div class="card empty">
+      <p>Zatím nemáte žádné hledání.</p>
+      <a class="btn btn-primary" href="/criteria/new">Nové hledání</a>
+    </div>
+  ) : (
+    <>
+      <div class="toolbar">
+        <form method="get" action="/">
+          <div class="field">
+            <label for="c">Hledání</label>
+            <select id="c" name="c">
+              {criteriaList.map((c) => (
+                <option value={c.id} selected={c.id === active?.id}>{c.name}{c.active ? '' : ' (neaktivní)'}</option>
+              ))}
+            </select>
+          </div>
+          {status !== 'all' && <input type="hidden" name="status" value={status} />}
+          <button class="btn" type="submit">Zobrazit</button>
+        </form>
+        <nav aria-label="Filtr stavu">
+          <ul class="segmented">
+            {STATUSES.map((s) => (
+              <li><a href={href({ status: s.value })} aria-current={s.value === status ? 'true' : undefined}>{s.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+
+      {ranked && ranked.items.length > 0 ? (
+        <>
+          <ol class="listing-list">
+            {ranked.items.map((l, i) => (
+              <li><ListingCard listing={l} next={here} eager={i === 0 && ranked.page === 1} /></li>
+            ))}
+          </ol>
+          <Pagination page={ranked.page} page_count={ranked.page_count} href={(p) => href({ page: p })} />
+        </>
+      ) : (
+        <div class="card empty"><p>Žádné nabídky pro zvolený filtr.</p></div>
+      )}
+    </>
+  )}
+</Layout>

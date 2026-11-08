@@ -1,0 +1,349 @@
+{
+ "pagination": {
+  "limit": 60,
+  "offset": 0,
+  "total": 3
+ },
+ "results": [
+  {
+   "advert_images": [
+    "//d18-a.sdn.cz/d_18/c_img_qG_E/nQO0xPd86TDhsIbDxt7IOOQ3x/7902.jpeg",
+    "//d18-a.sdn.cz/d_18/c_img_qG_E/nQO0xPd86Tw5RPENERIOOQ4P/7672.jpeg",
+    "//d18-a.sdn.cz/d_18/c_img_qG_E/nQO0xPd86TBSHZcBY2eIOOQ4t/565d.jpeg"
+   ],
+   "advert_images_all": [
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qG_E/nQO0xPd86TDhsIbDxt7IOOQ3x/7902.jpeg",
+     "restb_room_type": 5,
+     "room_type_confidence": 0.9997562766075134
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qG_E/nQO0xPd86Tw5RPENERIOOQ4P/7672.jpeg",
+     "restb_room_type": 6,
+     "room_type_confidence": 0.9997238516807556
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qG_E/nQO0xPd86TBSHZcBY2eIOOQ4t/565d.jpeg",
+     "restb_room_type": 16,
+     "room_type_confidence": 0.9941002726554871
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qG_E/nQO0xPd86TCcWhaBWpWIOOQ5M/7da3.jpeg",
+     "restb_room_type": 5,
+     "room_type_confidence": 0.9627866744995117
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qG_E/nQO0xPd86TkUyxBYYWIOOQ5s/9cf4.jpeg",
+     "restb_room_type": 0,
+     "room_type_confidence": 0.699999988079071
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qG_E/kb4JgeTdkC4TclBn3QIOOQ6R/fcc4.jpeg",
+     "restb_room_type": 1,
+     "room_type_confidence": 0.9926487803459167
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qG_E/nQO0xPd86TnJSEBVKAIOOQ6w/e7df.jpeg",
+     "restb_room_type": 15,
+     "room_type_confidence": 0.9987106323242188
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qG_E/kb4JgeTdkBcInfBck7IOOQ7W/8e3b.jpeg",
+     "restb_room_type": 5,
+     "room_type_confidence": 0.9987764954566956
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qG_E/nQO0xPd86TCcWhaBW8dIOOQ7z/b5c2.jpeg",
+     "restb_room_type": 2,
+     "room_type_confidence": 0.9151090383529663
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qG_E/kb4JgeTdk3RI9BYpZIOOQ8Q/88ac.jpeg",
+     "restb_room_type": 10,
+     "room_type_confidence": 0.9922643899917603
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qG_E/nQO0xPd86TnJSEBTdVIOOQ87/2628.jpeg",
+     "restb_room_type": 15,
+     "room_type_confidence": 0.8082557320594788
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qG_E/kb4JgeTdkCJCefBp6oIOOQ9Z/87a5.jpeg",
+     "restb_room_type": 15,
+     "room_type_confidence": 0.9877529144287109
+    }
+   ],
+   "advert_name": "Pronájem bytu 2+kk 57 m²",
+   "category_main_cb": {
+    "name": "Byty",
+    "value": 1
+   },
+   "category_sub_cb": {
+    "name": "2+kk",
+    "value": 4
+   },
+   "category_type_cb": {
+    "name": "Pronájem",
+    "value": 2
+   },
+   "discount_show": false,
+   "has_matterport_url": false,
+   "has_video": true,
+   "hash_id": 2338390092,
+   "locality": {
+    "city": "Brno",
+    "city_seo_name": "brno",
+    "citypart": "Zábrdovice",
+    "citypart_seo_name": "zabrdovice",
+    "country": "Česká republika",
+    "country_id": 112,
+    "country_seo_name": "ceska-republika",
+    "district": "Brno-město",
+    "district_id": 72,
+    "district_seo_name": "brno-mesto",
+    "entity_type": "address",
+    "geohash": "u2ezfhe5du",
+    "gps_lat": 49.2001478773,
+    "gps_lon": 16.6155667,
+    "housenumber": "949",
+    "inaccuracy_type": "gps",
+    "municipality": null,
+    "municipality_id": 5740,
+    "municipality_seo_name": null,
+    "quarter": "Brno-střed",
+    "quarter_id": 11,
+    "quarter_seo_name": "brno-stred",
+    "region": "Jihomoravský kraj",
+    "region_id": 14,
+    "region_seo_name": "jihomoravsky-kraj",
+    "street": "Příční",
+    "street_id": 79887,
+    "street_seo_name": "pricni",
+    "streetnumber": "14",
+    "ward": null,
+    "ward_id": 14985,
+    "ward_seo_name": null
+   },
+   "premise": {
+    "city_seo_name": "brno",
+    "quarter_seo_name": "brno-zidenice",
+    "seo_name": "roi-estate",
+    "ward_seo_name": "zidenice"
+   },
+   "premise_id": 75583,
+   "premise_logo": "https://d48-a.sdn.cz/d_48/c_img_oc_A/kcukOQcMmRUmqDSBEGOJRW/610d.png",
+   "price": 23900.0,
+   "price_currency_cb": {
+    "name": "Kč",
+    "value": 1
+   },
+   "price_czk": 23900.0,
+   "price_czk_m2": 419,
+   "price_summary": 23900.0,
+   "price_summary_czk": 23900.0,
+   "price_summary_unit_cb": {
+    "name": "za měsíc",
+    "value": 2
+   },
+   "price_unit_cb": {
+    "name": "za měsíc",
+    "value": 2
+   },
+   "user_id": 311333
+  },
+  {
+   "advert_images": [
+    "//d18-a.sdn.cz/d_18/c_img_qH_A/kb4JgeTdkC4TclDaboIQldyk/a7c4.jpeg",
+    "//d18-a.sdn.cz/d_18/c_img_qH_A/kb4JgeTdk3whEJHZsIQleUG/8b4d.jpeg",
+    "//d18-a.sdn.cz/d_18/c_img_qH_A/kb4JgeTdkCfcGaDT3AIQleUX/4093.jpeg"
+   ],
+   "advert_images_all": [
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qH_A/kb4JgeTdkC4TclDaboIQldyk/a7c4.jpeg",
+     "restb_room_type": 0,
+     "room_type_confidence": 0.699999988079071
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qH_A/kb4JgeTdk3whEJHZsIQleUG/8b4d.jpeg",
+     "restb_room_type": 0,
+     "room_type_confidence": 0.699999988079071
+    }
+   ],
+   "advert_name": "Pronájem bytu 2+kk 50 m²",
+   "category_main_cb": {
+    "name": "Byty",
+    "value": 1
+   },
+   "category_sub_cb": {
+    "name": "2+kk",
+    "value": 4
+   },
+   "category_type_cb": {
+    "name": "Pronájem",
+    "value": 2
+   },
+   "discount_show": false,
+   "has_matterport_url": false,
+   "has_video": false,
+   "hash_id": 622198860,
+   "locality": {
+    "city": "Brno",
+    "city_seo_name": "brno",
+    "citypart": "Trnitá",
+    "citypart_seo_name": "trnita",
+    "country": "Česká republika",
+    "country_id": 112,
+    "country_seo_name": "ceska-republika",
+    "district": "Brno-město",
+    "district_id": 72,
+    "district_seo_name": "brno-mesto",
+    "entity_type": "street",
+    "geohash": "u2ezf794yx",
+    "gps_lat": 49.19454513935722,
+    "gps_lon": 16.623971244770985,
+    "housenumber": null,
+    "inaccuracy_type": "street",
+    "municipality": null,
+    "municipality_id": 5740,
+    "municipality_seo_name": null,
+    "quarter": "Brno-střed",
+    "quarter_id": 11,
+    "quarter_seo_name": "brno-stred",
+    "region": "Jihomoravský kraj",
+    "region_id": 14,
+    "region_seo_name": "jihomoravsky-kraj",
+    "street": "Podnásepní",
+    "street_id": 79828,
+    "street_seo_name": "podnasepni",
+    "streetnumber": null,
+    "ward": null,
+    "ward_id": 14984,
+    "ward_seo_name": null
+   },
+   "premise": {
+    "city_seo_name": "",
+    "quarter_seo_name": "",
+    "seo_name": "",
+    "ward_seo_name": ""
+   },
+   "premise_id": null,
+   "premise_logo": "",
+   "price": 15500.0,
+   "price_currency_cb": {
+    "name": "Kč",
+    "value": 1
+   },
+   "price_czk": 15500.0,
+   "price_czk_m2": 310,
+   "price_summary": 15500.0,
+   "price_summary_czk": 15500.0,
+   "price_summary_unit_cb": {
+    "name": "za měsíc",
+    "value": 2
+   },
+   "price_unit_cb": {
+    "name": "za měsíc",
+    "value": 2
+   },
+   "user_id": null
+  },
+  {
+   "advert_images": [
+    "//d18-a.sdn.cz/d_18/c_img_qH_A/nQO0xPd86TBctrNJhp8IRojGq/d92a.jpeg",
+    "//d18-a.sdn.cz/d_18/c_img_qH_A/nQO0xPd86Tw5RPJnplIRojHc/eae8.jpeg",
+    "//d18-a.sdn.cz/d_18/c_img_qH_A/kb4JgeTdkC4TclDydbIRojIT/867a.jpeg"
+   ],
+   "advert_images_all": [
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qH_A/nQO0xPd86TBctrNJhp8IRojGq/d92a.jpeg",
+     "restb_room_type": 5,
+     "room_type_confidence": 0.9947858452796936
+    },
+    {
+     "advert_image_sdn_url": "//d18-a.sdn.cz/d_18/c_img_qH_A/nQO0xPd86Tw5RPJnplIRojHc/eae8.jpeg",
+     "restb_room_type": 16,
+     "room_type_confidence": 0.9880253672599792
+    }
+   ],
+   "advert_name": "Pronájem bytu 2+kk 65 m²",
+   "category_main_cb": {
+    "name": "Byty",
+    "value": 1
+   },
+   "category_sub_cb": {
+    "name": "2+kk",
+    "value": 4
+   },
+   "category_type_cb": {
+    "name": "Pronájem",
+    "value": 2
+   },
+   "discount_show": false,
+   "has_matterport_url": false,
+   "has_video": false,
+   "hash_id": 877002828,
+   "locality": {
+    "city": "Brno",
+    "city_seo_name": "brno",
+    "citypart": "Obřany",
+    "citypart_seo_name": "obrany",
+    "country": "Česká republika",
+    "country_id": 112,
+    "country_seo_name": "ceska-republika",
+    "district": "Brno-město",
+    "district_id": 72,
+    "district_seo_name": "brno-mesto",
+    "entity_type": "address",
+    "geohash": "u2gb4cgdyj",
+    "gps_lat": 49.2288665519,
+    "gps_lon": 16.6493616561,
+    "housenumber": "615",
+    "inaccuracy_type": "gps",
+    "municipality": null,
+    "municipality_id": 5740,
+    "municipality_seo_name": null,
+    "quarter": "Brno-Maloměřice a Obřany",
+    "quarter_id": 28,
+    "quarter_seo_name": "brno-malomerice-a-obrany",
+    "region": "Jihomoravský kraj",
+    "region_id": 14,
+    "region_seo_name": "jihomoravsky-kraj",
+    "street": "Mlýnské nábřeží",
+    "street_id": 79692,
+    "street_seo_name": "mlynske-nabrezi",
+    "streetnumber": "3",
+    "ward": null,
+    "ward_id": 14651,
+    "ward_seo_name": null
+   },
+   "premise": {
+    "city_seo_name": "brno",
+    "quarter_seo_name": "brno-zidenice",
+    "seo_name": "roi-estate",
+    "ward_seo_name": "zidenice"
+   },
+   "premise_id": 75583,
+   "premise_logo": "https://d48-a.sdn.cz/d_48/c_img_oc_A/kcukOQcMmRUmqDSBEGOJRW/610d.png",
+   "price": 20990.0,
+   "price_currency_cb": {
+    "name": "Kč",
+    "value": 1
+   },
+   "price_czk": 20990.0,
+   "price_czk_m2": 323,
+   "price_summary": 20990.0,
+   "price_summary_czk": 20990.0,
+   "price_summary_unit_cb": {
+    "name": "za měsíc",
+    "value": 2
+   },
+   "price_unit_cb": {
+    "name": "za měsíc",
+    "value": 2
+   },
+   "user_id": 311333
+  }
+ ],
+ "status_code": 200,
+ "status_message": "OK"
+}

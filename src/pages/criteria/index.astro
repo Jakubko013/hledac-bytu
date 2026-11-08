@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCriteriaList } from '../../lib/view-data';
+import { OFFER_LABEL, formatCzk } from '../../lib/format';
+
+const list = await getCriteriaList();
+const range = (a: number | null, b: number | null, unit: (n: number) => string) =>
+  a == null && b == null ? 'bez omezení' : `${a != null ? unit(a) : '…'} – ${b != null ? unit(b) : '…'}`;
+---
+<Layout title="Hledání">
+  <div class="page-head">
+    <h1>Hledání</h1>
+    <a class="btn btn-primary" href="/criteria/new">Nové hledání</a>
+  </div>
+  {list.length === 0 ? (
+    <div class="card empty"><p>Zatím žádná hledání.</p></div>
+  ) : (
+    <ul class="criteria-list">
+      {list.map((c) => (
+        <li class="card criteria-item">
+          <div>
+            <h2 style="margin:0"><a href={`/criteria/${c.id}`}>{c.name}</a></h2>
+            <p class="muted">
+              {OFFER_LABEL[c.offer_type]} · {c.city} · {c.layouts.length ? c.layouts.join(', ') : 'všechny dispozice'} · {range(c.price_min, c.price_max, formatCzk)}
+            </p>
+          </div>
+          <div class="actions">
+            <span class={`badge ${c.active ? 'badge-ok' : ''}`}>{c.active ? 'Aktivní' : 'Neaktivní'}</span>
+            <form method="post" action="/api/criteria">
+              <input type="hidden" name="intent" value="toggle_active" />
+              <input type="hidden" name="id" value={c.id} />
+              <input type="hidden" name="active" value={c.active ? 'false' : 'true'} />
+              <button class="btn btn-sm" type="submit">{c.active ? 'Pozastavit' : 'Aktivovat'}</button>
+            </form>
+            <a class="btn btn-sm" href={`/criteria/${c.id}`}>Upravit</a>
+            <a class="btn btn-sm" href={`/?c=${c.id}`}>Zobrazit nabídky</a>
+          </div>
+        </li>
+      ))}
+    </ul>
+  )}
+</Layout>

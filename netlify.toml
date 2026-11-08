@@ -1,0 +1,27 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# NOTE: [[headers]] apply only to static files served by the Netlify CDN, NOT to
+# SSR function responses. The same headers (plus Cache-Control: private, no-store)
+# must be set in Astro middleware for dynamic pages.
+# Source of truth for the values: src/lib/security-headers.ts (keep both in sync;
+# tests/web/security-headers.test.ts asserts they match).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data: https://*.sdn.cz https://sta-reality2.1gr.cz https://api.bezrealitky.cz; script-src 'self' 'sha256-2wwePias9r2s9GmpzYui7ZsnHhZpd0QJYGr/RcDrMsg='; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"
+    X-Robots-Tag = "noindex, nofollow"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

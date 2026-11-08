@@ -1,0 +1,110 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import FactorBars from '../../components/FactorBars.astro';
+import ListingStateForm from '../../components/ListingStateForm.astro';
+import Sparkline from '../../components/Sparkline.astro';
+import { getListing } from '../../lib/view-data';
+import {
+  CONDITION_LABEL, OFFER_LABEL, PORTAL_LABEL, formatCzk, formatCzkOrDash, formatDate, formatKm, formatNumber, pricePerM2, scoreTone,
+} from '../../lib/format';
+
+const { id } = Astro.params;
+const l = /^\d+$/.test(id ?? '') ? await getListing(Number(id), Number(Astro.url.searchParams.get('c')) || undefined) : null;
+if (!l) return new Response('Nabídka nenalezena', { status: 404 });
+
+const yn = (v: boolean | null) => (v == null ? 'neuvedeno' : v ? 'ano' : 'ne');
+const saved = Astro.url.searchParams.get('saved');
+---
+<Layout title={l.title}>
+  <div class="page-head">
+    <div>
+      <p style="margin:0"><a href={`/?c=${l.criteria_id}`}>← Zpět na přehled</a></p>
+      <h1>{l.title}</h1>
+      <div class="badges">
+        {l.is_new && <span class="badge badge-new">Nové</span>}
+        {l.price_drop_pct != null && <span class="badge badge-drop">Zlevněno −{l.price_drop_pct} %</span>}
+        <span class="badge">{CONDITION_LABEL[l.condition]}</span>
+        {l.removed_at && <span class="badge badge-bad">Staženo z nabídky</span>}
+      </div>
+    </div>
+    <p class={`score score-${scoreTone(l.score)}`} style="margin:0"><span class="visually-hidden">Skóre </span>{l.score}<small>/100</small></p>
+  </div>
+
+  <div class="detail">
+    <section class="card gallery" aria-label="Fotografie">
+      {l.images[0]
+        ? <img class="main" src={l.images[0]} width="640" height="400" alt={`Hlavní fotografie: ${l.title}`} fetchpriority="high" />
+        : <p class="muted panel">Bez fotografií.</p>}
+      {l.images.length > 1 && (
+        <div class="thumbs">
+          {l.images.slice(1).map((src, i) => <img src={src} width="320" height="200" alt={`Fotografie ${i + 2}`} loading="lazy" decoding="async" />)}
+        </div>
+      )}
+    </section>
+
+    <section class="card panel" aria-labelledby="params-h">
+      <h2 id="params-h">Parametry</h2>
+      <p class="price">{formatCzkOrDash(l.price_czk)}</p>
+      <dl class="params">
+        <dt>Typ</dt><dd>{OFFER_LABEL[l.offer_type]}</dd>
+        <dt>Dispozice</dt><dd>{l.layout ?? '–'}</dd>
+        <dt>Plocha</dt><dd>{l.area_m2 ? `${formatNumber(l.area_m2)} m²` : '–'}</dd>
+        <dt>Cena za m²</dt><dd>{(() => { const p = pricePerM2(l.price_czk, l.area_m2); return p != null ? formatCzk(p) : '–'; })()}</dd>
+        {l.fees_czk != null && <><dt>Poplatky</dt><dd>{formatCzk(l.fees_czk)}</dd></>}
+        <dt>Patro</dt><dd>{l.floor ?? 'neuvedeno'}</dd>
+        <dt>Stav</dt><dd>{CONDITION_LABEL[l.condition]}</dd>
+        <dt>Lokalita</dt><dd>{l.locality_text}</dd>
+        <dt>Město</dt><dd>{l.city}</dd>
+        {l.distance_km != null && <><dt>Od centra</dt><dd>{formatKm(l.distance_km)}</dd></>}
+        <dt>Balkon</dt><dd>{yn(l.has_balcony)}</dd>
+        <dt>Parkování</dt><dd>{yn(l.has_parking)}</dd>
+        <dt>Výtah</dt><dd>{yn(l.has_elevator)}</dd>
+        <dt>Poprvé vidět</dt><dd>{formatDate(l.first_seen_at)}</dd>
+        <dt>Naposledy vidět</dt><dd>{formatDate(l.last_seen_at)}</dd>
+      </dl>
+      <div style="margin-top:1rem"><ListingStateForm listing_id={l.id} status={l.status} next={`/listing/${l.id}?c=${l.criteria_id}`} /></div>
+    </section>
+
+    <section class="card panel" aria-labelledby="score-h">
+      <h2 id="score-h">Rozpad skóre</h2>
+      <FactorBars details={l.factor_details} />
+    </section>
+
+    <div style="display:grid;gap:var(--gap)">
+      <section class="card panel" aria-labelledby="hist-h">
+        <h2 id="hist-h">Vývoj ceny</h2>
+        <Sparkline points={l.price_history} />
+        <ul class="facts" style="margin-top:.5rem">
+          {l.price_history.map((p) => <li>{formatDate(p.observed_at)}: {formatCzk(p.price_czk)}</li>)}
+        </ul>
+      </section>
+
+      <section class="card panel" aria-labelledby="src-h">
+        <h2 id="src-h">Původní inzeráty</h2>
+        <ul style="margin:0;padding-left:1.1rem">
+          {l.sources.map((s) => (
+            <li>
+              <a href={s.url} target="_blank" rel="noopener noreferrer">{PORTAL_LABEL[s.portal]}<span class="visually-hidden"> (otevře se v novém okně)</span></a>
+              — {formatCzk(s.price_czk)}
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+
+    <section class="card panel wide" aria-labelledby="note-h">
+      <h2 id="note-h">Poznámka</h2>
+      {saved && <div class="alert alert-ok" role="status">Poznámka uložena.</div>}
+      <form class="form-grid" method="post" action="/api/listing-state">
+        <input type="hidden" name="listing_id" value={l.id} />
+        <input type="hidden" name="status" value={l.status === 'new' ? 'seen' : l.status} />
+        <input type="hidden" name="next" value={`/listing/${l.id}?c=${l.criteria_id}&saved=1`} />
+        <div class="field">
+          <label for="note">Sdílená poznámka</label>
+          <textarea id="note" name="note" maxlength="2000">{l.note}</textarea>
+        </div>
+        <div><button class="btn btn-primary" type="submit">Uložit poznámku</button></div>
+      </form>
+    </section>
+  </div>
+</Layout>

@@ -1,0 +1,121 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCriteria, getEmptyCriteria } from '../../lib/view-data';
+import { CITIES, FACTOR_LABEL, LAYOUTS } from '../../lib/format';
+import { FACTORS } from '../../lib/view-types';
+
+const { id } = Astro.params;
+const isNew = id === 'new';
+const c = isNew ? getEmptyCriteria() : /^\d+$/.test(id ?? '') ? await getCriteria(Number(id)) : null;
+if (!c) return Astro.redirect('/criteria');
+
+const error = Astro.url.searchParams.get('error');
+const cities = CITIES.includes(c.city) ? CITIES : [c.city, ...CITIES];
+const val = (n: number | null) => (n == null ? '' : String(n));
+---
+<Layout title={isNew ? 'Nové hledání' : `Upravit: ${c.name}`}>
+  <div class="page-head">
+    <h1>{isNew ? 'Nové hledání' : 'Upravit hledání'}</h1>
+    <a href="/criteria">← Zpět na hledání</a>
+  </div>
+
+  {error && <div class="alert alert-error" role="alert">{error}</div>}
+
+  <form class="form-grid" method="post" action="/api/criteria">
+    {!isNew && <input type="hidden" name="id" value={c.id} />}
+
+    <div class="field">
+      <label for="name">Název</label>
+      <input id="name" name="name" type="text" required maxlength="80" value={c.name} />
+    </div>
+
+    <div class="row-2">
+      <fieldset>
+        <legend>Typ nabídky</legend>
+        <div class="check-grid">
+          <label class="check"><input type="radio" name="offer_type" value="rent" checked={c.offer_type === 'rent'} required /> Nájem</label>
+          <label class="check"><input type="radio" name="offer_type" value="sale" checked={c.offer_type === 'sale'} /> Prodej</label>
+        </div>
+      </fieldset>
+      <div class="field">
+        <label for="city">Město</label>
+        <select id="city" name="city" required>
+          {cities.map((city) => <option value={city} selected={city === c.city}>{city}</option>)}
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="localities">Lokality</label>
+      <input id="localities" name="localities" type="text" value={c.localities.join(', ')} aria-describedby="localities-hint" />
+      <p class="hint" id="localities-hint">Oddělené čárkou, např. Brno-střed, Židenice. Prázdné = celé město.</p>
+    </div>
+
+    <fieldset>
+      <legend>Cena (Kč)</legend>
+      <div class="row-2">
+        <div class="field"><label for="price_min">Od</label><input id="price_min" name="price_min" type="number" min="0" step="1" inputmode="numeric" value={val(c.price_min)} /></div>
+        <div class="field"><label for="price_max">Do</label><input id="price_max" name="price_max" type="number" min="0" step="1" inputmode="numeric" value={val(c.price_max)} /></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Dispozice</legend>
+      <div class="check-grid">
+        {LAYOUTS.map((l) => (
+          <label class="check"><input type="checkbox" name="layouts" value={l} checked={c.layouts.includes(l)} /> {l}</label>
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Plocha (m²)</legend>
+      <div class="row-2">
+        <div class="field"><label for="area_min">Od</label><input id="area_min" name="area_min" type="number" min="0" step="1" inputmode="numeric" value={val(c.area_min)} /></div>
+        <div class="field"><label for="area_max">Do</label><input id="area_max" name="area_max" type="number" min="0" step="1" inputmode="numeric" value={val(c.area_max)} /></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Podmínky (musí mít)</legend>
+      <div class="check-grid">
+        <label class="check"><input type="checkbox" name="must_balcony" value="1" checked={c.must.balcony} /> Balkon</label>
+        <label class="check"><input type="checkbox" name="must_parking" value="1" checked={c.must.parking} /> Parkování</label>
+        <label class="check"><input type="checkbox" name="must_elevator" value="1" checked={c.must.elevator} /> Výtah</label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="max_distance_km">Maximální vzdálenost od centra (km)</label>
+      <input id="max_distance_km" name="max_distance_km" type="number" min="0" step="0.5" inputmode="decimal" value={val(c.max_distance_km)} />
+    </div>
+
+    <fieldset>
+      <legend>Váhy faktorů</legend>
+      <p class="hint" style="margin:0 0 .75rem">0 = nezohlední, 5 = nejdůležitější.</p>
+      <div class="form-grid" style="max-width:none">
+        {FACTORS.map((f) => (
+          <div class="weight">
+            <label for={`weight_${f}`}>{FACTOR_LABEL[f]}</label>
+            <output for={`weight_${f}`} id={`out_${f}`}>{c.weights[f]}</output>
+            <input id={`weight_${f}`} name={`weight_${f}`} type="range" min="0" max="5" step="0.5" value={c.weights[f]} data-out={`out_${f}`} />
+          </div>
+        ))}
+      </div>
+    </fieldset>
+
+    <label class="check"><input type="checkbox" name="active" value="1" checked={c.active} /> Aktivní hledání</label>
+
+    <div class="actions">
+      <button class="btn btn-primary" type="submit">{isNew ? 'Vytvořit hledání' : 'Uložit změny'}</button>
+      <a class="btn" href="/criteria">Zrušit</a>
+    </div>
+  </form>
+
+  <script is:inline>
+    document.querySelectorAll('input[type=range][data-out]').forEach(function (el) {
+      var out = document.getElementById(el.dataset.out);
+      el.addEventListener('input', function () { if (out) out.textContent = el.value; });
+    });
+  </script>
+</Layout>

@@ -1,0 +1,35 @@
+---
+import { FACTORS, type FactorDetail, type FactorMap } from '../lib/view-types';
+import { FACTOR_LABEL, FACTOR_SHORT } from '../lib/format';
+
+interface Props {
+  breakdown?: FactorMap;
+  details?: FactorDetail[];
+}
+const { breakdown, details } = Astro.props;
+const pct = (n: number) => Math.round(Math.min(1, Math.max(0, n)) * 100);
+---
+{details ? (
+  <ul class="factor-bars large">
+    {details.map((d) => (
+      <li>
+        <div class="row">
+          <span>{FACTOR_LABEL[d.factor]} <span class="muted">(váha {d.weight.toLocaleString('cs-CZ')})</span></span>
+          <span class="bar" aria-hidden="true"><span style={`width:${pct(d.score)}%`}></span></span>
+          <span class="val">{pct(d.score)} %</span>
+        </div>
+        <p class="why">{d.explanation}</p>
+      </li>
+    ))}
+  </ul>
+) : breakdown && (
+  <ul class="factor-bars" aria-label="Rozpad skóre podle faktorů">
+    {FACTORS.map((f) => (
+      <li>
+        <span>{FACTOR_SHORT[f]}</span>
+        <span class="bar" aria-hidden="true"><span style={`width:${pct(breakdown[f])}%`}></span></span>
+        <span class="val">{pct(breakdown[f])}</span>
+      </li>
+    ))}
+  </ul>
+)}

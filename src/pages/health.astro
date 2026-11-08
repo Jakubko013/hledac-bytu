@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getHealth } from '../lib/view-data';
+import { PORTAL_LABEL, RUN_STATUS_LABEL, formatDateTime } from '../lib/format';
+
+const runs = await getHealth();
+const tone = { ok: 'badge-ok', partial: 'badge-warn', failed: 'badge-bad', running: '', never_run: '' } as const;
+const msg = Astro.url.searchParams.get('started');
+const busy = Astro.url.searchParams.get('busy');
+---
+<Layout title="Stav crawlerů">
+  <div class="page-head">
+    <h1>Stav crawlerů</h1>
+    <form method="post" action="/api/run-now">
+      <button class="btn btn-primary" type="submit">Spustit teď</button>
+    </form>
+  </div>
+  {msg && <div class="alert alert-ok" role="status">Crawl byl spuštěn.</div>}
+  {busy && <div class="alert alert-error" role="status">Stahování už běží, zkuste to za chvíli.</div>}
+
+  <div class="card table-wrap">
+    <table>
+      <caption class="visually-hidden">Poslední běh pro každý portál</caption>
+      <thead>
+        <tr>
+          <th scope="col">Portál</th><th scope="col">Stav</th><th scope="col">Začátek</th>
+          <th scope="col">Staženo</th><th scope="col">Nové</th><th scope="col">Aktualizované</th><th scope="col">Chyba</th>
+        </tr>
+      </thead>
+      <tbody>
+        {runs.length === 0 && <tr><td colspan="7" class="muted">Zatím žádný běh.</td></tr>}
+        {runs.map((r) => (
+          <tr>
+            <th scope="row">{PORTAL_LABEL[r.portal]}<br /><span class="muted" style="font-weight:400">{r.runner}</span></th>
+            <td><span class={`badge ${tone[r.status]}`}>{RUN_STATUS_LABEL[r.status]}</span></td>
+            <td>{formatDateTime(r.started_at)}</td>
+            <td>{r.fetched}</td><td>{r.new_count}</td><td>{r.updated_count}</td>
+            <td>{r.error ?? '–'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</Layout>

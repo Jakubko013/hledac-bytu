@@ -1,0 +1,27 @@
+---
+import { formatCzk, formatDate } from '../lib/format';
+
+interface Props {
+  points: { price_czk: number; observed_at: string }[];
+}
+const { points } = Astro.props;
+const W = 280, H = 70, P = 6;
+const prices = points.map((p) => p.price_czk);
+const lo = Math.min(...prices), hi = Math.max(...prices);
+const span = hi - lo || 1;
+const xy = points.map((p, i) => ({
+  x: points.length === 1 ? W / 2 : P + (i * (W - 2 * P)) / (points.length - 1),
+  y: H - P - ((p.price_czk - lo) / span) * (H - 2 * P),
+}));
+const line = xy.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+const area = xy.length > 1 ? `${P},${H} ${line} ${W - P},${H}` : '';
+const first = points[0], last = points[points.length - 1];
+const label = first && last
+  ? `Vývoj ceny od ${formatDate(first.observed_at)}: z ${formatCzk(first.price_czk)} na ${formatCzk(last.price_czk)}`
+  : 'Bez historie ceny';
+---
+<svg class="sparkline" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label}>
+  {area && <polygon class="area" points={area} />}
+  {xy.length > 1 && <polyline class="line" points={line} />}
+  {xy.map((p) => <circle class="dot" cx={p.x} cy={p.y} r="3" />)}
+</svg>

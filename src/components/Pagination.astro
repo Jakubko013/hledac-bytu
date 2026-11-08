@@ -1,0 +1,24 @@
+---
+interface Props {
+  page: number;
+  page_count: number;
+  /** Builds the href for a page number. */
+  href: (page: number) => string;
+}
+const { page, page_count, href } = Astro.props;
+const pages = Array.from({ length: page_count }, (_, i) => i + 1).filter(
+  (n) => n === 1 || n === page_count || Math.abs(n - page) <= 1,
+);
+---
+{page_count > 1 && (
+  <nav class="pagination" aria-label="Stránkování">
+    {page > 1 ? <a href={href(page - 1)} rel="prev">‹ Předchozí</a> : <span class="cur disabled" aria-hidden="true">‹ Předchozí</span>}
+    {pages.map((n, i) => (
+      <>
+        {i > 0 && n - pages[i - 1]! > 1 && <span aria-hidden="true">…</span>}
+        <a href={href(n)} aria-current={n === page ? 'page' : undefined} aria-label={`Stránka ${n}`}>{n}</a>
+      </>
+    ))}
+    {page < page_count ? <a href={href(page + 1)} rel="next">Další ›</a> : <span class="cur disabled" aria-hidden="true">Další ›</span>}
+  </nav>
+)}

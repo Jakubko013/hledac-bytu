@@ -1,0 +1,27 @@
+{
+ "result": {
+  "hash_id": 2338390092,
+  "building_condition": {
+   "name": "Novostavba",
+   "value": 6
+  },
+  "elevator": {
+   "name": "Ano",
+   "value": 1
+  },
+  "balcony": true,
+  "loggia": false,
+  "terrace": false,
+  "parking": 1,
+  "parking_lots": true,
+  "garage": false,
+  "floor_number": 6,
+  "usable_area": 57,
+  "cost_of_living": "+ zálohy na služby a energie 4 963 Kč + parkovací stání v garáží 2000 Kč",
+  "price_note": "+ zálohy na služby a energie 4 963 Kč + parkovací stání v garáží 2000 Kč + provize, + kauce",
+  "advert_description": "Hledáte krásné bydlení v samém srdci Brna s hezkým panoramatickým výhledem a bezstarostným parkováním? Nabízíme k podnájmu novostavbu slunného, nového a částečně zařízeného bytu o dispozici 2+kk v novostavbě na ulici Příční. Byt se nachází v 6. nadzemním podlaží moderního bytového domu s výtahem. Byt poskytuje bytové prostory s celkovou podlahovou plochou 53,4 m², maximální soukromí, klid a především hezký výhled na dominanty města z ptačí perspektivy.   \r\nSoučástí bytu je západně orientovaný balkón o výměře 5,2 m² přístupný přímo z obývacího pokoje, který je ideální pro ranní kávu i večerní relaxaci s výhledem. \r\nProvedení domu i bytu je ve vyšším standardu.\r\nObývací pokoj je propojen s jídelním koutem a plně vybavenou kuchyňskou linkou na míru, která disponuje vestavěnými spotřebiči jako je lednice s mrazákem,  varná deska, trouba, myčka nádobí a digestoř. \r\nVelkou výhodou v této vyhledávané lokalitě v širším centru Brna je vyhrazené parkovací místo na zakladači ve společné podzemní garáži přímo v domě za poplatek 2 000 Kč měsíčně. K bytu náleží také čistý a bezpečný sklep o výměře 2 m² v suterénu domu pro uskladnění sezónních věcí či kol.   \r\nLokalita nabízí výbornou pěší dostupnost do historického centra města i na Hlavní nádraží, zastávky tramvají a autobusů jsou vzdálené jen pár minut chůze. V nejbližším okolí najdete kompletní občanskou vybavenost včetně restaurací, výběrových kaváren, supermarketů, lékáren i parků.   \r\nByt je k dispozici ihned!\r\nTento byt nabízí dokonale vyváženou kombinaci komfortu, moderního stylu, výhledu a skvělé lokality. V případě zájmu o prohlídku mě neváhejte kontaktovat!\r\n\r\nTento byt je podnajímán se službou „Váš Domácí“. Co je to služba „Váš Domácí“? Je to služba, kdy podnájemce automaticky získává:\r\n\r\n- plně pojištěný byt s non stop asistenční linkou, kdy pojištění se vztahuje i na odpovědnost za škody způsobené v běžném životě, prodlouženou záruku spotřebičů o 2 roky, a nebo servisní techniky v případě pojistné události (práce zámečníka, opravy havárií).\r\n- zákaznický servis služby „Váš Domácí“ od 9:00 – 17:00 pro řešení Vašich dotazů a požadavků\r\n- technickou podporu (pro případ, že budete chtít pomoci s technickými záležitostmi na bytě)\r\n- všechny platby na jednom místě (elektřina, plyn…), už nikdy žádné přepisování a upisování distributorům a poskytovatelům internetu, s ukončením podnájmu končí automaticky všechny poskytované služby\r\n- možnost výměny bytu za větší/menší/jinde z portfolia bytů Váš Domácí (Brno, Praha a další města)\r\n\r\nPodnajmout si byt nebylo nikdy snazší a efektivnější. Toto je služba Váš Domácí.",
+  "price_czk": 23900.0
+ },
+ "status_code": 200,
+ "status_message": "OK"
+}

@@ -1,0 +1,28 @@
+---
+import type { ListingStatus } from '../lib/view-types';
+
+interface Props {
+  listing_id: number;
+  status: ListingStatus;
+  next: string;
+}
+const { listing_id, status, next } = Astro.props;
+const fav = status === 'favorite';
+const hid = status === 'hidden';
+---
+<div class="actions">
+  <form method="post" action="/api/listing-state">
+    <input type="hidden" name="listing_id" value={listing_id} />
+    <input type="hidden" name="status" value={fav ? 'seen' : 'favorite'} />
+    <input type="hidden" name="next" value={next} />
+    <button class="btn btn-sm" type="submit" aria-pressed={fav ? 'true' : 'false'}>
+      <span aria-hidden="true">{fav ? '★' : '☆'}</span> {fav ? 'Oblíbený' : 'Do oblíbených'}
+    </button>
+  </form>
+  <form method="post" action="/api/listing-state">
+    <input type="hidden" name="listing_id" value={listing_id} />
+    <input type="hidden" name="status" value={hid ? 'seen' : 'hidden'} />
+    <input type="hidden" name="next" value={next} />
+    <button class="btn btn-sm" type="submit">{hid ? 'Zobrazit' : 'Skrýt'}</button>
+  </form>
+</div>

@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  /** Show header navigation (false for login). */
+  nav?: boolean;
+}
+const { title, nav = true } = Astro.props;
+const path = Astro.url.pathname;
+const links = [
+  { href: '/', label: 'Přehled', match: (p: string) => p === '/' || p.startsWith('/listing') },
+  { href: '/criteria', label: 'Hledání', match: (p: string) => p.startsWith('/criteria') },
+  { href: '/health', label: 'Stav', match: (p: string) => p.startsWith('/health') },
+];
+---
+<!doctype html>
+<html lang="cs">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{title} · hledač bytu</title>
+  </head>
+  <body>
+    <a class="skip" href="#main">Přeskočit na obsah</a>
+    {nav && (
+      <header class="site-header">
+        <div class="container">
+          <a class="brand" href="/">hledač bytu</a>
+          <nav class="site-nav" aria-label="Hlavní navigace">
+            {links.map((l) => (
+              <a href={l.href} aria-current={l.match(path) ? 'page' : undefined}>{l.label}</a>
+            ))}
+          </nav>
+          <form method="post" action="/api/logout">
+            <button class="btn btn-sm" type="submit">Odhlásit</button>
+          </form>
+        </div>
+      </header>
+    )}
+    <main id="main" class={nav ? 'container' : undefined}>
+      <slot />
+    </main>
+  </body>
+</html>

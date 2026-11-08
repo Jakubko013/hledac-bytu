@@ -1,0 +1,44 @@
+---
+import type { ListingCard } from '../lib/view-types';
+import FactorBars from './FactorBars.astro';
+import ListingStateForm from './ListingStateForm.astro';
+import { CONDITION_LABEL, PORTAL_LABEL, formatCzk, formatCzkOrDash, formatKm, formatNumber, pricePerM2, scoreTone } from '../lib/format';
+
+interface Props {
+  listing: ListingCard;
+  next: string;
+  eager?: boolean;
+}
+const { listing: l, next, eager = false } = Astro.props;
+const perM2 = pricePerM2(l.price_czk, l.area_m2);
+---
+<article class="card listing-card">
+  {l.image
+    ? <img class="thumb" src={l.image} width="640" height="400" alt="" loading={eager ? 'eager' : 'lazy'} decoding="async" fetchpriority={eager ? 'high' : undefined} />
+    : <div class="thumb" role="img" aria-label="Bez fotografie"></div>}
+  <div class="body">
+    <div class="badges">
+      {l.is_new && <span class="badge badge-new">Nové</span>}
+      {l.price_drop_pct != null && <span class="badge badge-drop">Zlevněno −{l.price_drop_pct} %</span>}
+      <span class="badge">{CONDITION_LABEL[l.condition]}</span>
+      <span class="badge">{PORTAL_LABEL[l.portal]}</span>
+    </div>
+    <h2><a href={`/listing/${l.id}?c=${l.criteria_id}`}>{l.title}</a></h2>
+    <p class="price">{formatCzkOrDash(l.price_czk)}{l.fees_czk ? <span class="muted" style="font-weight:400;font-size:.85rem"> + {formatCzk(l.fees_czk)} poplatky</span> : null}</p>
+    <ul class="facts">
+      <li>{l.layout ?? '–'}</li>
+      <li>{l.area_m2 ? `${formatNumber(l.area_m2)}\u00a0m²` : '–'}</li>
+      <li>{perM2 != null ? `${formatNumber(perM2)}\u00a0Kč/m²` : '–'}</li>
+      {l.distance_km != null && <li>{formatKm(l.distance_km)} od centra</li>}
+      <li>{l.locality_text}</li>
+    </ul>
+    {l.also_on.length > 0 && <p class="muted" style="margin:0;font-size:.88rem">také na: {l.also_on.map((p) => PORTAL_LABEL[p]).join(', ')}</p>}
+  </div>
+  <div class="score-box">
+    <p class={`score score-${scoreTone(l.score)}`} style="margin:0">
+      <span class="visually-hidden">Skóre </span>{l.score}<small>/100</small>
+    </p>
+    <FactorBars breakdown={l.breakdown} />
+    <ListingStateForm listing_id={l.id} status={l.status} next={next} />
+  </div>
+</article>

@@ -1,0 +1,27 @@
+{
+ "result": {
+  "hash_id": 622198860,
+  "building_condition": {
+   "name": "Dobrý",
+   "value": 2
+  },
+  "elevator": {
+   "name": "- nezadáno",
+   "value": 0
+  },
+  "balcony": true,
+  "loggia": false,
+  "terrace": false,
+  "parking": null,
+  "parking_lots": false,
+  "garage": false,
+  "floor_number": 5,
+  "usable_area": 50,
+  "cost_of_living": "",
+  "price_note": "",
+  "advert_description": "Nabízíme pronájem bytu 2+kk o výměře 50m2. byt se nachází ve čtvrtém patře bez výtahu v cihlovém domě. Rozdělení bytu je na dvě patra, tím, že nahoře je prostorný pokoj. Dole je kuchyňská linka, toaleta, balkon a prostor na pohovku. Nabízí se nezařízený..\nK nájmu se připočítává inkaso dle skutečné spotřeby po měsíci vyúčtování ( cca 3.000,-kč) Vhodné pro 2 osoby.\nKauce, Provize",
+  "price_czk": 15500.0
+ },
+ "status_code": 200,
+ "status_message": "OK"
+}

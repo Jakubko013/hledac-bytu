@@ -10,7 +10,7 @@ const busy = Astro.url.searchParams.get('busy');
 ---
 <Layout title="Stav crawlerů">
   <div class="page-head">
-    <h1>Stav crawlerů</h1>
+    <div><p class="eyebrow">Provoz</p><h1>Stav crawlerů</h1></div>
     <form method="post" action="/api/run-now">
       <button class="btn btn-primary" type="submit">Spustit teď</button>
     </form>
@@ -31,8 +31,8 @@ const busy = Astro.url.searchParams.get('busy');
         {runs.length === 0 && <tr><td colspan="7" class="muted">Zatím žádný běh.</td></tr>}
         {runs.map((r) => (
           <tr>
-            <th scope="row">{PORTAL_LABEL[r.portal]}<br /><span class="muted" style="font-weight:400">{r.runner}</span></th>
-            <td><span class={`badge ${tone[r.status]}`}>{RUN_STATUS_LABEL[r.status]}</span></td>
+            <th scope="row">{PORTAL_LABEL[r.portal]}<br /><span class="muted" style="font-weight:400;font-size:.85rem">{r.runner}</span></th>
+            <td><span class={`badge pill ${tone[r.status]}`}>{RUN_STATUS_LABEL[r.status]}</span></td>
             <td>{formatDateTime(r.started_at)}</td>
             <td>{r.fetched}</td><td>{r.new_count}</td><td>{r.updated_count}</td>
             <td>{r.error ?? '–'}</td>

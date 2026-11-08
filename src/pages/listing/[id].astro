@@ -3,9 +3,10 @@ import Layout from '../../layouts/Layout.astro';
 import FactorBars from '../../components/FactorBars.astro';
 import ListingStateForm from '../../components/ListingStateForm.astro';
 import Sparkline from '../../components/Sparkline.astro';
+import ScoreRing from '../../components/ScoreRing.astro';
 import { getListing } from '../../lib/view-data';
 import {
-  CONDITION_LABEL, OFFER_LABEL, PORTAL_LABEL, formatCzk, formatCzkOrDash, formatDate, formatKm, formatNumber, pricePerM2, scoreTone,
+  CONDITION_LABEL, OFFER_LABEL, PORTAL_LABEL, formatCzk, formatCzkOrDash, formatDate, formatKm, formatNumber, pricePerM2,
 } from '../../lib/format';
 
 const { id } = Astro.params;
@@ -18,33 +19,46 @@ const saved = Astro.url.searchParams.get('saved');
 <Layout title={l.title}>
   <div class="page-head">
     <div>
-      <p style="margin:0"><a href={`/?c=${l.criteria_id}`}>← Zpět na přehled</a></p>
+      <a class="back" href={`/?c=${l.criteria_id}`}>← Zpět na přehled</a>
+      <p class="eyebrow">{OFFER_LABEL[l.offer_type]} · {l.locality_text}</p>
       <h1>{l.title}</h1>
       <div class="badges">
         {l.is_new && <span class="badge badge-new">Nové</span>}
         {l.price_drop_pct != null && <span class="badge badge-drop">Zlevněno −{l.price_drop_pct} %</span>}
-        <span class="badge">{CONDITION_LABEL[l.condition]}</span>
+        <span class="tag">{CONDITION_LABEL[l.condition]}</span>
         {l.removed_at && <span class="badge badge-bad">Staženo z nabídky</span>}
       </div>
     </div>
-    <p class={`score score-${scoreTone(l.score)}`} style="margin:0"><span class="visually-hidden">Skóre </span>{l.score}<small>/100</small></p>
+    <ScoreRing score={l.score} large />
   </div>
 
   <div class="detail">
     <section class="card gallery" aria-label="Fotografie">
       {l.images[0]
-        ? <img class="main" src={l.images[0]} width="640" height="400" alt={`Hlavní fotografie: ${l.title}`} fetchpriority="high" />
+        ? (
+          <a class="hero-link" href={l.images[0]} target="_blank" rel="noopener noreferrer" data-lb-group="detail" data-lb-index="0" aria-label={`Zvětšit fotografii 1 z ${l.images.length}`}>
+            <img class="main" src={l.images[0]} width="960" height="720" alt={`Hlavní fotografie: ${l.title}`} fetchpriority="high" />
+            <span class="zoom-chip" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" /></svg>
+              {l.images.length > 1 ? `Všech ${l.images.length} fotek` : 'Zvětšit'}
+            </span>
+          </a>
+        )
         : <p class="muted panel">Bez fotografií.</p>}
       {l.images.length > 1 && (
         <div class="thumbs">
-          {l.images.slice(1).map((src, i) => <img src={src} width="320" height="200" alt={`Fotografie ${i + 2}`} loading="lazy" decoding="async" />)}
+          {l.images.map((src, i) => (
+            <a href={src} target="_blank" rel="noopener noreferrer" data-lb-group="detail" data-lb-index={i} aria-label={`Zvětšit fotografii ${i + 1} z ${l.images.length}`}>
+              <img src={src} width="320" height="240" alt={`Fotografie ${i + 1}`} loading="lazy" decoding="async" />
+            </a>
+          ))}
         </div>
       )}
     </section>
 
     <section class="card panel" aria-labelledby="params-h">
       <h2 id="params-h">Parametry</h2>
-      <p class="price">{formatCzkOrDash(l.price_czk)}</p>
+      <div class="detail-price"><p class="price">{formatCzkOrDash(l.price_czk)}</p>{(() => { const p = pricePerM2(l.price_czk, l.area_m2); return p != null ? <span class="muted">{formatNumber(p)}&nbsp;Kč/m²</span> : null; })()}</div>
       <dl class="params">
         <dt>Typ</dt><dd>{OFFER_LABEL[l.offer_type]}</dd>
         <dt>Dispozice</dt><dd>{l.layout ?? '–'}</dd>
@@ -74,18 +88,18 @@ const saved = Astro.url.searchParams.get('saved');
       <section class="card panel" aria-labelledby="hist-h">
         <h2 id="hist-h">Vývoj ceny</h2>
         <Sparkline points={l.price_history} />
-        <ul class="facts" style="margin-top:.5rem">
+        <ul class="history">
           {l.price_history.map((p) => <li>{formatDate(p.observed_at)}: {formatCzk(p.price_czk)}</li>)}
         </ul>
       </section>
 
       <section class="card panel" aria-labelledby="src-h">
         <h2 id="src-h">Původní inzeráty</h2>
-        <ul style="margin:0;padding-left:1.1rem">
+        <ul class="sources">
           {l.sources.map((s) => (
             <li>
               <a href={s.url} target="_blank" rel="noopener noreferrer">{PORTAL_LABEL[s.portal]}<span class="visually-hidden"> (otevře se v novém okně)</span></a>
-              — {formatCzk(s.price_czk)}
+              <span class="muted">{formatCzk(s.price_czk)}</span>
             </li>
           ))}
         </ul>

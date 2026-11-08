@@ -162,12 +162,12 @@ describe('getRankedListings', () => {
 
   it('card fields: is_new, price drop pct, status, image, distance, locality', async () => {
     await upsertListings(t.db, [makeListing({ externalId: 'x', priceCzk: 20000, images: ['https://img.example.test/i0.jpg'] })]);
-    await upsertListings(t.db, [makeListing({ externalId: 'x', priceCzk: 15000, images: ['https://img.example.test/i0.jpg'] })]);
+    await upsertListings(t.db, [makeListing({ externalId: 'x', priceCzk: 15000, images: ['https://img.example.test/i0.jpg', 'https://img.example.test/i1.jpg'] })]);
     const c = await insertCriteria(t.db);
     await rescoreAll(t.db);
     const [item] = (await getRankedListings(c.id)).items;
     expect(item).toMatchObject({
-      criteria_id: c.id, status: 'new', is_new: true, price_drop_pct: 25, image: 'https://img.example.test/i0.jpg',
+      criteria_id: c.id, status: 'new', is_new: true, price_drop_pct: 25, images: ['https://img.example.test/i0.jpg', 'https://img.example.test/i1.jpg'],
       locality_text: 'Brno-střed', price_czk: 15000,
     });
     expect(item!.distance_km).toBeGreaterThanOrEqual(0);
@@ -230,7 +230,7 @@ describe('getListing', () => {
     const d = (await getListing(id, c.id))!;
     expect(d).toMatchObject({
       status: 'favorite', note: 'call them', price_drop_pct: 10, floor: 2, has_balcony: true,
-      also_on: ['idnes'], criteria_id: c.id, removed_at: null, image: 'https://img.example.test/a.jpg',
+      also_on: ['idnes'], criteria_id: c.id, removed_at: null, images: ['https://img.example.test/a.jpg'],
     });
     expect(d.price_history.map((h) => h.price_czk)).toEqual([20000, 18000]);
     expect(d.sources.map((s) => s.portal)).toEqual(['sreality', 'idnes']);

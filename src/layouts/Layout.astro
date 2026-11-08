@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Lightbox from '../components/Lightbox.astro';
 
 interface Props {
   title: string;
@@ -21,6 +22,9 @@ const links = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
     <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#f7f3ec" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#131210" media="(prefers-color-scheme: dark)" />
+    <link rel="preload" href="/fonts/cormorant-latin-600.woff2" as="font" type="font/woff2" crossorigin />
     <title>{title} · hledač bytu</title>
   </head>
   <body>
@@ -40,5 +44,6 @@ const links = [
     <main id="main" class={nav ? 'container' : undefined}>
       <slot />
     </main>
+    {nav && <Lightbox />}
   </body>
 </html>

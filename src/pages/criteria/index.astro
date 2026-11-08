@@ -9,23 +9,23 @@ const range = (a: number | null, b: number | null, unit: (n: number) => string) 
 ---
 <Layout title="Hledání">
   <div class="page-head">
-    <h1>Hledání</h1>
+    <div><p class="eyebrow">Správa</p><h1>Hledání</h1></div>
     <a class="btn btn-primary" href="/criteria/new">Nové hledání</a>
   </div>
   {list.length === 0 ? (
-    <div class="card empty"><p>Zatím žádná hledání.</p></div>
+    <div class="card empty"><p>Zatím žádná hledání.</p><a class="btn btn-primary" href="/criteria/new">Nové hledání</a></div>
   ) : (
     <ul class="criteria-list">
       {list.map((c) => (
         <li class="card criteria-item">
           <div>
-            <h2 style="margin:0"><a href={`/criteria/${c.id}`}>{c.name}</a></h2>
+            <h2><a href={`/criteria/${c.id}`}>{c.name}</a></h2>
             <p class="muted">
               {OFFER_LABEL[c.offer_type]} · {c.city} · {c.layouts.length ? c.layouts.join(', ') : 'všechny dispozice'} · {range(c.price_min, c.price_max, formatCzk)}
             </p>
           </div>
           <div class="actions">
-            <span class={`badge ${c.active ? 'badge-ok' : ''}`}>{c.active ? 'Aktivní' : 'Neaktivní'}</span>
+            <span class={`badge pill ${c.active ? 'badge-ok' : ''}`}>{c.active ? 'Aktivní' : 'Neaktivní'}</span>
             <form method="post" action="/api/criteria">
               <input type="hidden" name="intent" value="toggle_active" />
               <input type="hidden" name="id" value={c.id} />

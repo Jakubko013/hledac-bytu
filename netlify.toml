@@ -25,3 +25,14 @@
   for = "/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Static files from dist/ (public/): fonts never change under the same name; lightbox.js is not hashed.
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/lightbox.js"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

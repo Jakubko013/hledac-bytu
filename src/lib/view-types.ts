@@ -58,7 +58,8 @@ export interface ListingCard {
   also_on: Portal[];
   /** Same data with urls (other portals with the same fingerprint). */
   also_on_links: ListingSource[];
-  image: string | null;
+  /** Photo URLs in display order (up to 10); the first one is the card thumbnail. */
+  images: string[];
   price_czk: number | null;
   fees_czk: number | null;
   area_m2: number | null;
@@ -96,7 +97,6 @@ export interface ListingDetail extends ListingCard {
   has_balcony: boolean | null;
   has_parking: boolean | null;
   has_elevator: boolean | null;
-  images: string[];
   first_seen_at: string;
   last_seen_at: string;
   removed_at: string | null;

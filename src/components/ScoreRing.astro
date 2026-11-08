@@ -1,0 +1,13 @@
+---
+import { scoreTone } from '../lib/format';
+
+interface Props {
+  score: number;
+  large?: boolean;
+}
+const { score, large = false } = Astro.props;
+const p = Math.min(100, Math.max(0, Math.round(score)));
+---
+<p class={`score score-${scoreTone(score)}${large ? ' score-lg' : ''}`} style={`--p:${p}`}>
+  <span class="score-num"><span class="visually-hidden">Skóre </span>{score}<small>/100</small></span>
+</p>

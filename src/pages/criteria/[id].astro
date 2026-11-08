@@ -15,8 +15,8 @@ const val = (n: number | null) => (n == null ? '' : String(n));
 ---
 <Layout title={isNew ? 'Nové hledání' : `Upravit: ${c.name}`}>
   <div class="page-head">
-    <h1>{isNew ? 'Nové hledání' : 'Upravit hledání'}</h1>
-    <a href="/criteria">← Zpět na hledání</a>
+    <div><p class="eyebrow">Kritéria</p><h1>{isNew ? 'Nové hledání' : 'Upravit hledání'}</h1></div>
+    <a class="back" href="/criteria">← Zpět na hledání</a>
   </div>
 
   {error && <div class="alert alert-error" role="alert">{error}</div>}

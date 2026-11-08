@@ -33,14 +33,18 @@ const href = (over: { status?: StatusFilter; page?: number }) => {
 const here = ranked ? href({ page: ranked.page }) : '/';
 ---
 <Layout title="Přehled">
-  <div class="page-head">
-    <h1>Přehled bytů</h1>
-    {ranked && <p class="muted" role="status">{ranked.total} {ranked.total === 1 ? 'nabídka' : ranked.total >= 2 && ranked.total <= 4 ? 'nabídky' : 'nabídek'}</p>}
-  </div>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Vaše hledání</p>
+      <h1>{active ? active.name : 'Přehled bytů'}</h1>
+      {ranked && <p class="hero-lead" role="status"><strong>{ranked.total}</strong> {ranked.total === 1 ? 'nabídka' : ranked.total >= 2 && ranked.total <= 4 ? 'nabídky' : 'nabídek'}, seřazeno podle skóre</p>}
+    </div>
+  </header>
 
   {criteriaList.length === 0 ? (
     <div class="card empty">
       <p>Zatím nemáte žádné hledání.</p>
+      <p class="muted" style="font-family:var(--font);font-size:1rem;font-weight:400">Vytvořte první a nabídky se objeví tady.</p>
       <a class="btn btn-primary" href="/criteria/new">Nové hledání</a>
     </div>
   ) : (
@@ -77,7 +81,7 @@ const here = ranked ? href({ page: ranked.page }) : '/';
           <Pagination page={ranked.page} page_count={ranked.page_count} href={(p) => href({ page: p })} />
         </>
       ) : (
-        <div class="card empty"><p>Žádné nabídky pro zvolený filtr.</p></div>
+        <div class="card empty"><p>Žádné nabídky pro zvolený filtr.</p><a class="btn" href={href({ status: 'all' })}>Zobrazit vše</a></div>
       )}
     </>
   )}

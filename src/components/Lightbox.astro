@@ -1,0 +1,24 @@
+---
+// One shared lightbox per page. Triggers: <a data-lb-group data-lb-index href="original-url">.
+// Behaviour lives in /lightbox.js (external script, allowed by CSP script-src 'self').
+---
+<dialog id="lightbox" class="lightbox" aria-label="Fotogalerie">
+  <div class="lb-stage" data-lb-stage>
+    <img class="lb-img" alt="" decoding="async" />
+    <p class="lb-msg" data-lb-msg hidden>Fotku se nepodařilo načíst. <a href="#" target="_blank" rel="noopener noreferrer">Otevřít originál</a></p>
+  </div>
+  <button type="button" class="lb-btn lb-close" data-lb-close aria-label="Zavřít">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+  </button>
+  <button type="button" class="lb-btn lb-prev" data-lb-prev aria-label="Předchozí fotka">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+  </button>
+  <button type="button" class="lb-btn lb-next" data-lb-next aria-label="Další fotka">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+  </button>
+  <div class="lb-bar">
+    <span data-lb-count aria-live="polite"></span>
+    <a data-lb-detail href="#" hidden>Zobrazit detail nabídky</a>
+  </div>
+</dialog>
+<script is:inline src="/lightbox.js" defer></script>
